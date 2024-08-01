@@ -21,7 +21,7 @@ jobs:
 
     - name: Build FreeBSD package
       run: |
-        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace toxchat/freebsd:latest \
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ustcmirror/freebsd-pkg:latest \
           /bin/sh -c "
           env ASSUME_ALWAYS_YES=YES pkg bootstrap
           pkg update -f
