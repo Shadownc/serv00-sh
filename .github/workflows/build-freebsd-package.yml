@@ -23,10 +23,11 @@ jobs:
       run: |
         docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace toxchat/freebsd:latest \
           /bin/sh -c "
-          pkg install -y git
+          env ASSUME_ALWAYS_YES=YES pkg bootstrap
+          pkg update -f
+          pkg install -y git python3 py37-pip
           git clone https://github.com/huashengdun/webssh.git
           cd webssh
-          pkg install -y python3 py37-pip
           pip install -r requirements.txt
           python setup.py bdist
           "
