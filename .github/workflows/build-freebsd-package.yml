@@ -21,7 +21,7 @@ jobs:
 
     - name: Build FreeBSD package
       run: |
-        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace auchida/freebsd:latest \
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace toxchat/freebsd:latest \
           /bin/sh -c "
           pkg install -y git
           git clone https://github.com/huashengdun/webssh.git
