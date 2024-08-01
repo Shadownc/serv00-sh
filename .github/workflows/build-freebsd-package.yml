@@ -38,11 +38,10 @@ jobs:
     - name: Pull and run FreeBSD image
       run: |
         docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-        docker pull toxchat/freebsd:latest
+        docker pull myfreeweb/freebsd-cross:latest
         docker run --rm -v ${{ github.workspace }}/webssh:/workspace -w /workspace \
-          kwiat/freebsd:latest \
-          sh -c "ASSUME_ALWAYS_YES=yes pkg bootstrap && \
-                 pkg update && pkg install -y python3 py39-pip && \
+          myfreeweb/freebsd-cross:latest \
+          sh -c "pkg install -y python3 py39-pip && \
                  pip install -r requirements.txt && \
                  pip install pyinstaller && \
                  pyinstaller --onefile webssh/__main__.py --name webssh"
