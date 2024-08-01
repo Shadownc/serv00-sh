@@ -38,9 +38,9 @@ jobs:
     - name: Pull and run FreeBSD image
       run: |
         docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-        docker pull myfreeweb/freebsd-cross:latest
+        docker pull ustcmirror/freebsd-pkg:latest
         docker run --rm -v ${{ github.workspace }}/webssh:/workspace -w /workspace \
-          myfreeweb/freebsd-cross:latest \
+          ustcmirror/freebsd-pkg:latest \
           sh -c "pkg install -y python3 py39-pip && \
                  pip install -r requirements.txt && \
                  pip install pyinstaller && \
