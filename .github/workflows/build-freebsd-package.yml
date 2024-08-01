@@ -1,17 +1,22 @@
-name: Build FreeBSD Executable
+name: Build FreeBSD Executable for WebSSH
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout WebSSH repository
+      uses: actions/checkout@v2
+      with:
+        repository: 'huashengdun/webssh'
+        path: 'webssh'
     
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -20,12 +25,10 @@ jobs:
     
     - name: Install dependencies
       run: |
+        cd webssh
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
-    
-    - name: Build with PyInstaller
-      run: pyinstaller --onefile webssh/main.py
     
     - name: Install qemu-user-static
       run: |
@@ -35,15 +38,15 @@ jobs:
     - name: Build FreeBSD executable
       run: |
         docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace \
+        docker run --rm -v ${{ github.workspace }}/webssh:/workspace -w /workspace \
           freebsd/freebsd-release:13.1 \
           sh -c "pkg install -y python3 py38-pip && \
                  pip install -r requirements.txt && \
                  pip install pyinstaller && \
-                 pyinstaller --onefile webssh/main.py"
+                 pyinstaller --onefile webssh/__main__.py --name webssh"
     
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: webssh-freebsd
-        path: dist/main
+        path: webssh/dist/webssh
