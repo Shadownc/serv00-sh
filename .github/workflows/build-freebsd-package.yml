@@ -32,7 +32,7 @@ jobs:
     
     - name: Build executable using PyInstaller
       run: |
-        pyinstaller --onefile webssh/__main__.py --name webssh
+        pyinstaller --onefile webssh/main.py --name webssh
     
     - name: Upload artifact
       uses: actions/upload-artifact@v2
