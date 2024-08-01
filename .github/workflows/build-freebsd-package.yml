@@ -1,0 +1,32 @@
+name: Build FreeBSD Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build FreeBSD package
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace zhux/freebsd:latest \
+          /bin/sh -c "
+          pkg install -y git
+          git clone https://github.com/huashengdun/webssh.git
+          cd webssh
+          pkg install -y python3 py37-pip
+          pip install -r requirements.txt
+          python setup.py bdist
+          "
