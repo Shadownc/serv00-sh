@@ -1,33 +1,49 @@
-name: Build FreeBSD Package
+name: Build FreeBSD Executable
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Build FreeBSD package
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install dependencies
       run: |
-        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace racket/pkg-build:latest \
-          /bin/sh -c "
-          env ASSUME_ALWAYS_YES=YES pkg bootstrap
-          pkg update -f
-          pkg install -y git python3 py37-pip
-          git clone https://github.com/huashengdun/webssh.git
-          cd webssh
-          pip install -r requirements.txt
-          python setup.py bdist
-          "
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build with PyInstaller
+      run: pyinstaller --onefile webssh/main.py
+    
+    - name: Install qemu-user-static
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu-user-static
+    
+    - name: Build FreeBSD executable
+      run: |
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace \
+          freebsd/freebsd-release:13.1 \
+          sh -c "pkg install -y python3 py38-pip && \
+                 pip install -r requirements.txt && \
+                 pip install pyinstaller && \
+                 pyinstaller --onefile webssh/main.py"
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: webssh-freebsd
+        path: dist/main
