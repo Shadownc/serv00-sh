@@ -35,11 +35,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y qemu-user-static
     
-    - name: Build FreeBSD executable
+    - name: Pull and run FreeBSD image
       run: |
         docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker pull ghcr.io/osuosl/freebsd:13
         docker run --rm -v ${{ github.workspace }}/webssh:/workspace -w /workspace \
-          freebsd/freebsd:13.2-RELEASE \
+          ghcr.io/osuosl/freebsd:13 \
           sh -c "pkg update && pkg install -y python3 py39-pip && \
                  pip install -r requirements.txt && \
                  pip install pyinstaller && \
