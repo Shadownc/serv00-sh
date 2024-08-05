@@ -15,6 +15,8 @@ npm config set prefix '~/.npm-global'
 if ! grep -q "PATH=~/.npm-global/bin:\$PATH" ~/.profile; then
     echo "export PATH=~/.npm-global/bin:\$PATH" >> ~/.profile
     echo "PATH has been updated. Please run 'source ~/.profile' or log out and log back in for the changes to take effect."
+    # 手动更新当前 shell 的 PATH
+    export PATH=~/.npm-global/bin:$PATH
 fi
 
 # 保存原始镜像地址
@@ -40,6 +42,9 @@ do
     printf "\r${spin:$i:1} Installing... (Press Ctrl+C to cancel)"
     sleep .1
 done
+
+# 手动更新当前 shell 的 PATH，确保 pm2 可执行
+export PATH=~/.npm-global/bin:$PATH
 
 # 检查 pm2 是否成功安装
 if command -v pm2 &> /dev/null
