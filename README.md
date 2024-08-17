@@ -22,5 +22,6 @@ bash <(curl -s https://raw.githubusercontent.com/Shadownc/serv00-sh/main/install
 |:-------------------:|:----------------------------:|
 | USERNAME.serv00.com |  替换成`Add a New Website`定义的域名 |
 | USERNAME            | 替换成`Serv00`的用户名                |
-| password            | 替换成`dashboard`新增服务器生成的密钥       |
+| password            | 替换成`dashboard`新增服务器生成的密钥       |  
+
 **查看详情访问[博客](https://blog.lmyself.top)**
