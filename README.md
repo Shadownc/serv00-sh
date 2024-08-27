@@ -28,7 +28,7 @@ bash <(curl -s https://raw.githubusercontent.com/Shadownc/serv00-sh/main/install
 ```
 bash <(curl -s https://raw.githubusercontent.com/Shadownc/serv00-sh/main/install_imgapi.sh)
 ```
-**说明**
+**说明：**
 | 脚本内                 | 替换成                                                           |
 |:-------------------:|:-------------------------------------------------------------:|
 | USERNAME.serv00.net | 使用serv00的mysql一般有前缀 要带上                                       |
