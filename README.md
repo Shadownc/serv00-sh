@@ -41,6 +41,7 @@ bash <(curl -s https://raw.githubusercontent.com/Shadownc/serv00-sh/main/install
 ## loli安装说明
 `loliimg_linux`部署在`linux` 搭配`nginx`使用  
 `loliimg`部署在`serv00`  
-`config.json`如果不需要搭配数据库使用仅需要修改`server`下的`port` port是你启动的端口号  
+`config.json`如果不需要搭配数据库使用仅需要修改`server`下的`port` `port`是你启动的端口号  
+**解压密码：`blog.lmyself.top`**
 
 **查看详情访问[博客](https://blog.lmyself.top)**
